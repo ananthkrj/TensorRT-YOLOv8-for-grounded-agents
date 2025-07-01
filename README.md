@@ -24,3 +24,12 @@ Objectives for each phase
 **Optimize and Deploy**
 - Benchmark with cudaEvent_t, Nsight
 - Integrate into a camera stream or robot perception
+
+**Architecture Steps** 
+1. Export Model to ONNX
+2. Load TensorRT Engine
+3. Implement Preprocessing
+4. Implement PostProcessing
+5. Add OpenCV Visualization
+6. Build Main Loop
+7. Add timing and benchmarking
