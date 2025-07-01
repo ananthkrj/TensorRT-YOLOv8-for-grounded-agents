@@ -1,35 +1,44 @@
 # Real Time Object Detection for Embodied Agents using TensorRT + YOLOv8
-A trash inference built off YOLOv8 + TensorRT, will be constructed to fit a future pipeline of vision classification for embodied agents
+An object estimatation inference for embodied agents built off YOLOv8 + TensorRT
 
 # Plan
 High level phases:
 
-**Understanding the Model**
-
-Set up Inference
-
-**Optimize and Deploy**
-
-Objectives for each phase
-
 **Understanding the model**
+- TensorRT architecture and C++ API
 - YOLOv8 architecture
 - Pre/postprocessing
 
-**Set up Inference**
-- Exporting to ONNX
-- Convert to TensorRT
-- Run inference with TensorRT Python API
+# Convert from yolov8 pytorch to ONNX (Done)
+- Utilized ultralytics to convert yolov8 into ONNX format
+- Why: Because ONNX acts a bridge which allows yolov8 models originally
+written in pyorch to be optimized and deployed within tensorRT ecosystem for
+faster inference speeds and low latency connection
 
-**Optimize and Deploy**
-- Benchmark with cudaEvent_t, Nsight
-- Integrate into a camera stream or robot perception
+# Load TensorRT engine
+- Goals are to load the .engine file, manage GPU 
+memory, and run inference
+- Will be working on engine.hpp and engine.cpp
 
-**Architecture Steps** 
-1. Export Model to ONNX
-2. Load TensorRT Engine
-3. Implement Preprocessing
-4. Implement PostProcessing
-5. Add OpenCV Visualization
-6. Build Main Loop
-7. Add timing and benchmarking
+# Implement Preprocessing
+- Goals are to resize, pad, and normalize image input, and convert to TensorRT input format
+- Will be working on preprocessor.hpp and preprocessor.cpp
+
+# Implement Postprocessing
+- Goals are to parse TensorRT output and apply NMS
+- Will be working on postprocessing.hpp and postprocessing.cpp
+
+# Add OpenCV visualization
+- Goals are to draw boxes and labels on the image frames
+= Woking on visualizer.hpp and visualizer.cpp
+
+# Build Main Loop
+- Goal is to tie all the components together into a real time inference loop
+- Working on main.cpp
+
+# Add timing and benchmarking
+- Profile pipeline and log latency
+- Only work on once everything above is done
+- utils.hpp and utils.cpp
+
+
