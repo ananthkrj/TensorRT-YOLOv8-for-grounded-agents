@@ -10,7 +10,7 @@ struct Detection {
     float x, y, width, height;
     float confidence;
     int classId;
-}
+};
 
 class Postprocessor {
 public:
