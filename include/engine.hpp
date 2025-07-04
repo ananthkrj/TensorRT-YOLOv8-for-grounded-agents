@@ -22,6 +22,10 @@ class Engine {
 
     // also include destructor in public access specifier
 public:
+    // engine path is a string value, as it is a reference to 
+    // a string object
+
+    // enginepath refers to the onnx conversion
     Engine(const std::string& enginePath); 
     ~Engine();
     

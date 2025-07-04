@@ -35,6 +35,7 @@ memory, and run inference
 # Build Main Loop
 - Goal is to tie all the components together into a real time inference loop
 - Working on main.cpp
+- Test on both normal images, and mp3/mp4 video. 
 
 # Add timing and benchmarking
 - Profile pipeline and log latency
