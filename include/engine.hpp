@@ -9,44 +9,29 @@ for tensorRT
 */
 
 #pragma once
-#include <NvInfer.h"
+#include <opencv2/opencv.hpp>
 #include <string>
 
-// create class that will essentiially act as a wrapper
-// for tensorRT inference
+
 class Engine {
-    // create constructor
-    // constructor will have a const type parameter
-    // parameter is a reference to a string object
-    // enginePath is name of parameter
-
-    // also include destructor in public access specifier
 public:
-    // engine path is a string value, as it is a reference to 
-    // a string object
+    // constructor and destructor
+    Engine();
 
-    // enginepath refers to the onnx conversion
-    Engine(const std::string& enginePath); 
     ~Engine();
+
+    // member func for loading onnx model from file
+    // pass onnx file as it is a string
+    bool loadModel(const std::string& modelPath);
     
-    // member variables of enginePath parameter
-    // will need engine loaded member function
-    bool loadEngine();
+    // run inference on preprocessed input
+    std::vector<float> runInference(const cv::Mat& prepreprocessedInput);
 
-    // checker for loading
-    // should be const
-    bool isLoaded() const;
 
-    // running inference member function
-    // main allocation and dellocation logic
-    bool runInference(float* input, float* output);
-
-    // 
 private:
-    // member of private access specifier
-    // sets up GPU input/output buffers
-    // cleans up gpu memory
-    bool allocateBuffers();
-    bool dellocateBuffers();
-};
+    // get model input dimensions
+    cv::Size getInputSize() const;
 
+    // get number of classes model can detect
+    int getNumClasses() const;
+};
