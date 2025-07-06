@@ -1,26 +1,21 @@
-/*
-Goal of engine.cpp:
-Implementation details, private methods, 
-TensorRT API calls
-*/
 #include "engine.hpp"
 #include <iostream>
 #include <memory>
 
-// constructor and destructor
-
+// Constructor: Initialize member variables
 Engine::Engine() {
     // TODO: Initialize session pointer to nullptr
     // TODO: Initialize input/output names
     // TODO: Set default model dimensions (640x640 for YOLOv8)
 }
 
+// Destructor: Clean up resources
 Engine::~Engine() {
     // TODO: Clean up ONNX session if it exists
     // TODO: Release any allocated memory
 }
 
-// loading onnx file
+// Load ONNX model from file path
 bool Engine::loadModel(const std::string& modelPath) {
     // TODO: Check if model file exists
     // TODO: Create ONNX Runtime environment
@@ -31,8 +26,8 @@ bool Engine::loadModel(const std::string& modelPath) {
     // TODO: Return true if successful, false otherwise
 }
 
-// running inference on preprocessed input
-std::vector<float> Engine::runInference(cv::Mat& preprocessedInput) {
+// Run inference on preprocessed input
+std::vector<float> Engine::runInference(const cv::Mat& preprocessedInput) {
     // TODO: Create input tensor from cv::Mat data
     // TODO: Prepare input tensor array for session
     // TODO: Prepare output tensor array for session
@@ -42,13 +37,12 @@ std::vector<float> Engine::runInference(cv::Mat& preprocessedInput) {
     // TODO: Return output vector
 }
 
-// const member functions, getting the model
+// Get model input dimensions
 cv::Size Engine::getInputSize() const {
     // TODO: Return model input dimensions (usually 640x640 for YOLOv8)
 }
 
-// dimensions and getting number of classes
-// model can detect
+// Get number of classes the model can detect
 int Engine::getNumClasses() const {
     // TODO: Calculate from output tensor shape
     // TODO: YOLOv8 output format: [1, 84, 8400] where 84 = 4(bbox) + 80(classes)

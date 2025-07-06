@@ -8,7 +8,7 @@
 // preprocessing will need constructor/destructor and member functions
 // that will execute these actions:
 // OpenCV c++: resizing, pad, and normalize image output
-class preprocessor {
+class Preprocessor {
 
 public:
 // constructor
