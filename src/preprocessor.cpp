@@ -10,16 +10,17 @@ preprocessor::preprocessor(int inputWidth, int inputHeight) {
 
 }
 
-// destrucotr
+// destructor
 preprocessor::~preprocessor() {
 
 }
 
-preprocessor::bool preprocess(const cv::Mat& image, float* output) {
+bool preprocessor::preprocess(const cv::Mat& image, float* output) {
 
 }
 
-preprocessor::cv::Mat resizeImage(const cv::Mat& image) {
+
+cv::Mat preprocessor::resizeImage(const cv::Mat& image) {
 
 }
 

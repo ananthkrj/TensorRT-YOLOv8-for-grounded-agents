@@ -23,6 +23,7 @@ public:
 
     // member function for converting raw model
     // output to detections
+    
     // pass struct variables into resziable array
     // find out why using std::vector is important for all
     // of these member functions
@@ -37,7 +38,6 @@ private:
     float m_nmsThreshold;
 
     // parse the yolo output format
-    // pas s
     std::vector<Detection> parseYOLO(float* output, int outputsize);
 
 };
