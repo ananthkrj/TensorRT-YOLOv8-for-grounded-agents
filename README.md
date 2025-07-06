@@ -1,8 +1,13 @@
-# Real Time Object Detection for Embodied Agents using TensorRT + YOLOv8
+# Real Time Object Detection for Embodied Agents using Onnx Runtime + YOLOv8
 An object estimatation inference for embodied agents built off YOLOv8 + TensorRT
 
 # Plan
 High level phases:
+
+Goals:
+- fully finish header
+- fully finish cpp files structure
+- code up all cpp files
 
 **Understanding the model**
 - TensorRT architecture and C++ API
@@ -15,10 +20,8 @@ High level phases:
 written in pyorch to be optimized and deployed within tensorRT ecosystem for
 faster inference speeds and low latency connection
 
-# Load TensorRT engine
-- Goals are to load the .engine file, manage GPU 
-memory, and run inference
-- Will be working on engine.hpp and engine.cpp
+# Load onnx logic
+- Goals are to load the onnx file, complete implementation
 
 # Implement Preprocessing
 - Goals are to resize, pad, and normalize image input, and convert to TensorRT input format
@@ -42,4 +45,54 @@ memory, and run inference
 - Only work on once everything above is done
 - utils.hpp and utils.cpp
 
+# Implementation Priority Order
 
+**Phase 1: Core Functionality**
+
+RAII - Get resource management right from the start
+Smart Pointers - For ONNX session management
+Struct Constructors - For data structures
+member initializer lists for constructors
+Pass by Reference - For performance
+
+**Phase 2: Data Processing**
+
+std::vector - For dynamic arrays
+OpenCV Mat Management - For image processing
+STL Algorithms - For filtering and sorting
+Lambda Functions - For custom predicates
+
+**Phase 3: Advanced Features**
+
+Exception Handling - For robustness
+std::chrono - For timing
+std::map - For color mapping
+Template Basics - For generic utilities
+
+**Phase 4: Optimization**
+
+Move Semantics - For performance
+constexpr - For compile-time optimization
+Memory Alignment - For ONNX optimization
+
+
+# Critical Concepts for Each File
+**engine.cpp**
+
+RAII, Smart Pointers, Exception Handling, Memory Alignment
+
+**preprocessor.cpp**
+
+OpenCV Mat Management, Method Chaining, Data Type Conversions, Pass by Reference
+
+**postprocessor.cpp**
+
+STL Algorithms, Lambda Functions, Function Objects, Iterator Concepts
+
+**visualizer.cpp**
+
+std::map, Color Conversions, Method Overloading
+
+**utils.cpp**
+
+std::filesystem, Exception Handling, Template Basics, std::chrono
