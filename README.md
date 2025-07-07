@@ -1,5 +1,5 @@
 # Real Time Object Detection for Embodied Agents using Onnx Runtime + YOLOv8
-An object estimatation inference for embodied agents built off YOLOv8 + TensorRT
+An object estimatation inference for embodied agents built off YOLOv8 + ONNX
 
 # Plan
 High level phases:
