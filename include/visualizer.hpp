@@ -1,34 +1,43 @@
-#pragma once
-#include <opencv2/opencv.hpp>
+// stls to use: vector, hashmap
+#ifndef VISUALIZER_HPP
+#define VISUALIZER_HPP
+
 #include <vector>
-#include <string>
-// for the detection struct include postprocessor.hpp struct
+#include <map>
+
+#include <opencv2/opencv.hpp>
+
 #include "postprocessor.hpp"
 
+// color palette structure
+struct colorPalette {
+
+};
+
 class Visualizer {
+private:
+    // drawing parameters
+
+    // color management
+
+    // display options
+
 public:
-    // need a constructor and destructor
-    Visualizer();
-    ~Visualizer();
+    // constructor
 
-    // find out difference between detections and detection
-    // draw bounding boxes on image
-    // pass image, and struct variables
-    // find out if passing the image as a const changes anything
-    void drawDetections(cv::Mat& image, const std::vector<Detection>& detections);
-    
-    // draw a single bounding box, boxes is built off this
-    void drawDetection(cv::Mat &image, const std::vector<Detection>& detections);
+    // Main cummalative visualization method
 
-    // add a class label text
-    // pass image by reference
-    void drawLabel(cv::Mat &image, const std::vector<Detection>& detection, const std::string& label);
+    // individual visualization (drawinf) methods
+
+    // utlity methods
+
+    // getters
+
+    // setters
 
 private:
-    // colors for different classes
-    // find out what scalar does in opencv
-    std::vector<cv::Scalar> m_color;
+    // private helper method 
 
-    // generate random colors
-    void generateColor(int numClasses);
 };
+
+#endif
