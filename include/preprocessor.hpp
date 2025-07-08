@@ -21,36 +21,61 @@ struct PreprocessInfo {
     // specifiy size of image
     cv::Size original_size;
     cv::Size target_size;
+    std::string environment_profile;
 
     // constructor for struct, as we use field initialization
     // in struct
+    // struct initialization using preprocess info variables
+    PreprocessInfo() : scale_x(1.0f), scale_y(1.0f), pad_x(0), pad_y(0) {}
 };
 
 // another struct here for enviornment info
-struct EnvionmentConfig {
-    // find out why i need all these for 
-    // configuartion of different colored
+struct EnvironmentConfig {
+    // find out why i need all these variables
+    // for configuartion of different colored
     // environments
 
     // brightness contrast adjustments
+    double brightness_factor;
+    double contrast_factor;
+    double gamma_correction;
 
     // noise reduction
+    // gaussian blur, and vairable for blur in kernel
+    bool apply_gaussian_blur;
+    cv::Size blur_kernel_size;
 
     // historgram equalization
+    bool apply_clahe;
+    double clahe_clip_limit;
+    cv::Size clahe_tile_size;
 
     // color space adjustments
+    bool enhance_saturation;
+    double saturation_factor;
 
-    // normalization parameters
+    // normalization parameter
+    cv::Scalar mean;
+    cv::Scalar std;
 
     // constructor with all defaults
+    EnvironmentConfig() : 
+        brightness_factor(1.0), contrast_factor(1.0), gamma_correction(1.0),
+        apply_gaussian_blur(false), blur_kernel_size(3, 3),
+        apply_clahe(false), clahe_clip_limit(2.0), clahe_tile_size(8, 8),
+        enhance_saturation(false), saturation_factor(1.0),
+        mean(cv::Scalar(0.485, 0.456, 0.406)), std(cv::Scalar(0.229, 0.224, 0.225)) {}
 };
 class Preprocessor {
 
 public:
     // question:
     // why does only engine.cpp have a destructor why not
-    // other files? Is raii still being upheld in other files?
-    // compile generated destructor does correcmtly already
+    // other files?: Becuase engine files are the only one where
+    // we manually allocate memory, used for engine properties.
+    // in all other files, mainly utilize stl's like vector and string
+    // for storing memory and, cleanup for that is destructed within
+    // the compiler itself. 
 
     // constructor
     // parameters will be target width and target height
@@ -66,6 +91,7 @@ public:
 
     // environment specific methods
     // set environment profile
+    void setEnvironmentProfile(const std::string& profile);
     // create custom environment
     // get avail environment
 
@@ -107,6 +133,8 @@ private:
     std::string current_environment_;
 
     // predefined environment cnfigs
+    // put in form of a hashmap
+    std::map<std::string, EnvironmentConfig> environment_configs_;
 
     // last preprocessing info
     // from struct
@@ -114,20 +142,27 @@ private:
 
     // private helper methods
     // initialize environment configs
+    void initializeEnvironmentConfigs();
 
     // private helper method for updating preprocessinfo
     void updatePreprocessInfo(const cv::Mat& original, const cv::Mat& processed,
                               float scale_x, float scale_y, int pad_x, int pad_y);
 
     // apply configured enhancements
+    cv::Mat applyConfiguredEnhancements(const cv::Mat& input, const EnvironmentConfig& config);
 
+    // environment specific envoirnment enhancement chains
     // process bright environment
+    cv::Mat processBrightEnv(const cv::Mat& input);
 
     // process dark environment
+    cv::Mat processDarkEnv(const cv::Mat& input);
 
     // process grainy env
+    cv::Mat processGrainyEnv(const cv::Mat& input);
 
     // process grayscale env
+    cv::Mat processGrayscaleEnv(const cv::Mat& input);
 };
 
 // header guard
