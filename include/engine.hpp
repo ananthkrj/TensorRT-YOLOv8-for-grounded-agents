@@ -24,22 +24,6 @@ struct TimingInfo {
 class Preprocessor;
 
 class Engine {
-private:
-    // ONNX Runtime components
-    std::unique_ptr<Ort::Env> env_;
-    std::unique_ptr<Ort::Session> session_;
-    std::unique_ptr<Ort::SessionOptions> session_options_;
-    
-    // Model metadata
-    std::vector<const char*> input_names_;
-    std::vector<const char*> output_names_;
-    std::vector<std::vector<int64_t>> input_shapes_;
-    std::vector<std::vector<int64_t>> output_shapes_;
-    
-    // Model parameters
-    cv::Size input_size_;
-    int num_classes_;
-    bool model_loaded_;
 
 public:
     // Constructor and destructor
@@ -61,8 +45,24 @@ public:
     
     // Utility methods
     void printModelInfo() const;
-    
+
 private:
+    // ONNX Runtime components
+    std::unique_ptr<Ort::Env> env_;
+    std::unique_ptr<Ort::Session> session_;
+    std::unique_ptr<Ort::SessionOptions> session_options_;
+    
+    // Model metadata
+    std::vector<const char*> input_names_;
+    std::vector<const char*> output_names_;
+    std::vector<std::vector<int64_t>> input_shapes_;
+    std::vector<std::vector<int64_t>> output_shapes_;
+    
+    // Model parameters
+    cv::Size input_size_;
+    int num_classes_;
+    bool model_loaded_;
+
     // Private helper methods
     bool initializeSession(const std::string& model_path);
     void extractModelMetadata();

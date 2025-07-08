@@ -6,6 +6,9 @@
 
 /* The goal of preprocessing is to preprocess the input,
 resize, convert Bgrt to rgb, normalize, and convertoblob
+
+And set environment configurations for the different
+types of testing environments
 */
 
 // struct for preprocessinginfo
@@ -42,18 +45,6 @@ struct EnvionmentConfig {
     // constructor with all defaults
 };
 class Preprocessor {
-private:
-    // target dimensions
-    int target_width_;
-    int target_height_;
-
-    // normalization parameters
-    cv::Scalar mean_;
-    cv::Scalar std_;
-
-    // last preprocessing info
-    // from struct
-    PreProcessInfo last_preprocess_info_;
 
 public:
     // question:
@@ -71,6 +62,12 @@ public:
     // all the preprocessing member functions have cv::Mat
     // as there data types
     cv::Mat preprocess(const cv::Mat& input);
+    cv::Mat preprocess(const cv::Mat& input, const std::string* environment);
+
+    // environment specific methods
+    // set environment profile
+    // create custom environment
+    // get avail environment
 
     // individual preprocessing steps
     // individual components of preprocessing is resizing
@@ -81,23 +78,56 @@ public:
     cv::Mat normalize(const cv::Mat& input);
     cv::Mat convertoBlob(const cv::Mat& input);
 
+    // lightiing/enhancement methods
+
+    // grayscale handling
+
+    // utility methods
+
     // getters
     // need to get the struct preprocessing info
     // need to get the target size
     PreprocessInfo getLastPreprocessInfo() const;
     cv::Size getTargetSize() const;
+    // get current config
+    // get curr env
 
     // setters
     void setTargetSize(int width, int height);
     void setNormalizationParams(const cv::Scalar& mean, condt cv::Scalar& std);
+    // set env config
 
-// why private again?
 private:
+    // target dimensions
+    int target_width_;
+    int target_height_;
+
+    // current environment configuration
+    EnvironmentConfig current_config_;
+    std::string current_environment_;
+
+    // predefined environment cnfigs
+
+    // last preprocessing info
+    // from struct
+    PreProcessInfo last_preprocess_info_;
+
     // private helper methods
+    // initialize environment configs
+
     // private helper method for updating preprocessinfo
     void updatePreprocessInfo(const cv::Mat& original, const cv::Mat& processed,
                               float scale_x, float scale_y, int pad_x, int pad_y);
 
+    // apply configured enhancements
+
+    // process bright environment
+
+    // process dark environment
+
+    // process grainy env
+
+    // process grayscale env
 };
 
 // header guard

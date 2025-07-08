@@ -17,6 +17,9 @@
 class id, class name, confidence of bounding,
 width, and height (rec2f box), center point
 (point2f)
+
+Goal is to process the output and get it ready for
+ visualization
 */
 struct Detection {
     int class_id;
@@ -39,23 +42,6 @@ struct Detection {
     }
 };
 class Postprocessor {
-
-private:
-    // threshold variables
-    float confidence_threshold_;
-    float nms_threshold_;
-
-    // class information
-    // vector of strings for class names
-    std::vector<std::string> class_names_;
-    int num_classes_;
-
-    // output parameters
-    // number of detections and output dimensions
-    // 8400 for yolov8
-    int num_detections_;
-    // 84 for yolov8
-    int output_dimensions_;
 
 public:
     // constructor with threshold values 
@@ -94,12 +80,26 @@ public:
 
     // debug methods
 
-
 private:
+    // threshold variables
+    float confidence_threshold_;
+    float nms_threshold_;
+
+    // class information
+    // vector of strings for class names
+    std::vector<std::string> class_names_;
+    int num_classes_;
+
+    // output parameters
+    // number of detections and output dimensions
+    // 8400 for yolov8
+    int num_detections_;
+    // 84 for yolov8
+    int output_dimensions_;
+
     // Private helper methods
     cv::Rect2f convertCenterToRect(float center_x, float center_y, float width, float height);
     std::string getClassName(int class_id) const;
     void sortDetectionsByConfidence(std::vector<Detection>& detections);
 };
-
 #endif
