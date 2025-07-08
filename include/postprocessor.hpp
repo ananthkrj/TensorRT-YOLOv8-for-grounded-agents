@@ -58,21 +58,48 @@ private:
     int output_dimensions_;
 
 public:
-    // constructor
+    // constructor with threshold values 
+    // passed as parameters
+    // find out why these are the tresholds
+    Postprocessor(float confidence_threshold = 0.5f, float threshold = 0.4f);
+
 
     // main cummalative preprocesing pipeline
+    // pass in output, and preprocessinfo struct as parameters
+    std::vector<Detection> postprocess(const std::vector<float>& output, const PreprocessInfo& preprocess_info);
 
     // indidual preprocessing steps
+    // parsing output
+    std::vector<Detection> parseOutput(const std::vector<float>& output);
+    // filter by confidence
+    std::vector<Detection> confidenceFilter(const std::vector<Detection>& detections);
+    // apply NMS
+    std::vector<Detection> applyNMS(const std::vector<Detection>& detections);
+    // scale the coordinates
+    std::vector<Detection> scaleCord(const std::vector<Detection>& detections, const PreprocessInfo& preprocess_info);
 
     // utility methods
+    // calculate intersection over union
+    float calculateIoU(const Detection& det1, const Detection& det2);
+    // pass name of the class name path as a parameter
+    bool loadClassNames(const std::string& class_names_path);
 
     // getters and setters
+    // confidence, nms, set modeloutput dimensions
+    float getConfidenceThreshold() const;
+    float getNMSThreshold() const;
+    void setConfidenceThreshold(float threshold);
+    void setNMSThreshold(float threshold);
+    void setModelOutputDimensions(int num_detections, int output_dimensions);
 
     // debug methods
 
 
 private:
-    // private helper methods
+    // Private helper methods
+    cv::Rect2f convertCenterToRect(float center_x, float center_y, float width, float height);
+    std::string getClassName(int class_id) const;
+    void sortDetectionsByConfidence(std::vector<Detection>& detections);
 };
 
 #endif
