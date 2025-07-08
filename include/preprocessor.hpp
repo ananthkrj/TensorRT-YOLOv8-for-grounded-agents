@@ -93,7 +93,9 @@ public:
     // set environment profile
     void setEnvironmentProfile(const std::string& profile);
     // create custom environment
-    // get avail environment
+    void createCustomEnvironment(const std::string& name, const EnvironmentConfig& config);
+    // get avail environment (getter)
+    std::vector<std::string> getAvailableEnvironments() const;
 
     // individual preprocessing steps
     // individual components of preprocessing is resizing
@@ -105,24 +107,37 @@ public:
     cv::Mat convertoBlob(const cv::Mat& input);
 
     // lightiing/enhancement methods
+    cv::Mat adjustBrightnessContrast(const cv::Mat& input, double brightness, double contrast)
+    cv::Mat applyGammaCorrection(const cv::Mat& input, double gamma);
+    cv::Mat enhanceForDarkConditions(const cv::Mat& input);
+    cv::Mat reduceNoise(const cv::Mat& input);
+    cv::Mat applyCLAHE(const cv::Mat& input);
+    cv::Mat enhanceSaturation(const cv::Mat& input, double factor);
 
     // grayscale handling
+    cv::Mat convertToGrayscale(const cv::Mat& input);
+    cv::Mat graysclaetoRGB(const cv::Mat& input);
+    bool isGrayscale(const cv::Mat& input) const;
 
     // utility methods
+    cv::Mat applyEnvironmentEnhancements(const cv::Mat& input);
+    void analyzeImageCharacteristics(const cv::Mat& input);
+    double calculateImageBrightness(const cv::Mat& input);
+    double calculateImageContrast(const cv::Mat& input);
 
     // getters
-    // need to get the struct preprocessing info
-    // need to get the target size
     PreprocessInfo getLastPreprocessInfo() const;
     cv::Size getTargetSize() const;
-    // get current config
-    // get curr env
+    EnvironmentConfig getCurrentConfig() const;
+    std::string getCurrentEnvironment() const;
 
     // setters
     void setTargetSize(int width, int height);
     void setNormalizationParams(const cv::Scalar& mean, condt cv::Scalar& std);
     // set env config
+    void setEnvironmentConfig(const std::string& environment, const EnvironmentConfig& config);
 
+    // debug methods
 private:
     // target dimensions
     int target_width_;
