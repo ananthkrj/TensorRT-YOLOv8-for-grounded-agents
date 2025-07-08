@@ -13,6 +13,13 @@
 #include <opencv2/opencv.hpp>
 #include <onnxruntime_cxx_api.h>
 
+struct TimingInfo {
+    // different timing info for components
+    double preprocess_time;
+    double inference_time;
+    double postprocess_time;
+};
+
 // Forward declarations (if needed)
 class Preprocessor;
 

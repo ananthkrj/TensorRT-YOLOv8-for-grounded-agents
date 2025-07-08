@@ -21,8 +21,26 @@ struct PreprocessInfo {
 
     // constructor for struct, as we use field initialization
     // in struct
-}
+};
 
+// another struct here for enviornment info
+struct EnvionmentConfig {
+    // find out why i need all these for 
+    // configuartion of different colored
+    // environments
+
+    // brightness contrast adjustments
+
+    // noise reduction
+
+    // historgram equalization
+
+    // color space adjustments
+
+    // normalization parameters
+
+    // constructor with all defaults
+};
 class Preprocessor {
 private:
     // target dimensions
