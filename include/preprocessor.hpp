@@ -2,7 +2,6 @@
 #ifndef PREPROCESSOR_HPP
 #define PREPROCESSOR_HPP
 
-#pragma once
 #include <opencv2/opencv.hpp>
 
 /* The goal of preprocessing is to preprocess the input,

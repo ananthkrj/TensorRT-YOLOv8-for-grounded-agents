@@ -1,43 +1,78 @@
-#pragma once
+// header guards
+#ifndef POSTPROCESSOR_HPP
+#define POSTPROCESSOR_HPP
+
+// libraries used
+#include <opencv2/opencv,hpp>
+
 #include <vector>
+#include <string>
 
-// need a struct for bounding box values
-// detection variables
-// width and height of a bounding box
-// confidence of box, (if it contains an oject)
-// classid: label of object in box
+#include "preprocessor.hpp"
+
+// create struct for common variables to be used
+// in postprocessing
+// this struct will be used in member functions
+/*
+class id, class name, confidence of bounding,
+width, and height (rec2f box), center point
+(point2f)
+*/
 struct Detection {
-    float x, y, width, height;
+    int class_id;
+    std::string class_name;
     float confidence;
-    int classId;
+    cv::Rect2f bbox;
+    cv::Point2f center;
+
+    // understand need for this constructor
+    // initialization in detection struct
+
+    // constructor with class id and 
+    // confidence initialized
+    Detection() : class_id(-1), confidence(0.0f) {}
+
+    // constructor with params
+    Detection(int id, const std::string& name, float conf, const cv::Rect2f& box)
+        : class_id(id), class_name(name), confidence(conf), bbox(box) {
+        center = cv::Point2f(box.x + box.width / 2, box.y + box.height / 2);
+    }
 };
-
 class Postprocessor {
-public:
-    // constructor
-    // parameters will be confidence threshold and nms threshold
-    // nms is non maximal suppression, find out what this is
-    Postprocessor(float confidenceThreshold, float nmsThreshold);
-    // destructor
-    ~Postprocessor();
-
-    // member function for converting raw model
-    // output to detections
-    
-    // pass struct variables into resziable array
-    // find out why using std::vector is important for all
-    // of these member functions
-    std::vector<Detection> postprocess(float* output, int outputsize);
-
-    // applying no maximum suppression (NMS)
-    std::vector<Detection> applyNMS(const std::vector<Detection>& detections);
 
 private:
-    // find out why use this m underscoe
-    float m_confidenceThreshold;
-    float m_nmsThreshold;
+    // threshold variables
+    float confidence_threshold_;
+    float nms_threshold_;
 
-    // parse the yolo output format
-    std::vector<Detection> parseYOLO(float* output, int outputsize);
+    // class information
+    // vector of strings for class names
+    std::vector<std::string> class_names_;
+    int num_classes_;
 
+    // output parameters
+    // number of detections and output dimensions
+    // 8400 for yolov8
+    int num_detections_;
+    // 84 for yolov8
+    int output_dimensions_;
+
+public:
+    // constructor
+
+    // main cummalative preprocesing pipeline
+
+    // indidual preprocessing steps
+
+    // utility methods
+
+    // getters and setters
+
+    // debug methods
+
+
+private:
+    // private helper methods
 };
+
+#endif

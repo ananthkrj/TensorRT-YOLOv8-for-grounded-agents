@@ -8,6 +8,8 @@
 #include <memory>
 
 // Third-party includes
+// find out why error appears for 
+// including opencv library
 #include <opencv2/opencv.hpp>
 #include <onnxruntime_cxx_api.h>
 
