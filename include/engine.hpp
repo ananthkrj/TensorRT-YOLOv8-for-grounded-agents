@@ -20,9 +20,6 @@ struct TimingInfo {
     double postprocess_time;
 };
 
-// Forward declarations (if needed)
-class Preprocessor;
-
 class Engine {
 
 public:
@@ -48,13 +45,17 @@ public:
 
 private:
     // ONNX Runtime components
+    // onnx runtime session enviornment object,
+    // session object, and session_options object
     std::unique_ptr<Ort::Env> env_;
     std::unique_ptr<Ort::Session> session_;
+    std::string model_path_;
     std::unique_ptr<Ort::SessionOptions> session_options_;
     
     // Model metadata
     std::vector<const char*> input_names_;
     std::vector<const char*> output_names_;
+
     std::vector<std::vector<int64_t>> input_shapes_;
     std::vector<std::vector<int64_t>> output_shapes_;
     
