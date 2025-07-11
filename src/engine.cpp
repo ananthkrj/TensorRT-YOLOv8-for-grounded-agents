@@ -13,7 +13,7 @@ Engine::Engine() {
 
     // Initialize session (you likely want to pass environment + session options here)
     session_ = std::make_unique<Ort::Session>(env_, model_path.c_str(), session_options_);
-    
+
     // vectors holding the pointers to character of input and output nodes
     // in onnx graph must be populated with actual input and output from
     // generated onnx model
@@ -58,7 +58,7 @@ Engine::Engine() {
     size_t num_outputs = session_.GetOutputCount();
 
     for (size_t i = 0; i < num_output_nodes; i++) {
-        Ort:TypeInfo type_info = session_->GetOutputTypeInfo();
+        Ort::TypeInfo type_info = session_->GetOutputTypeInfo();
         auto tensor_info = type_info_.GetTensorTypeAndShapeInfo();
         std::vector<int64_t> output_shape = tensor_info_GetShape();
 
