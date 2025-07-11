@@ -1,6 +1,7 @@
 #include "engine.hpp"
 #include <iostream>
 #include <memory>
+#include <filesystem>
 
 /*
 Where we load the model and extract its metadata using onnx runtime calls
@@ -71,6 +72,18 @@ Engine::~Engine() {
     // TODO: Clean up ONNX session if it exists
     // uni
     // TODO: Release any allocated memory
+    // default allocator used again
+    Ort:AllocatorWithDefaultOptions allocator;
+    // need to free, cast to a void pointer explicitly as free
+    // generally expects a void* argument
+    // we are freeing input and output 
+    for (const char* name : input_names) {
+        allocator.Free()(void*)name;
+    }
+
+    for (const char* name : output_names) {
+        allocator.Free()(void*)name;
+    }
 }
 
 // Load ONNX model from file path
@@ -82,6 +95,13 @@ bool Engine::loadModel(const std::string& modelPath) {
     // TODO: Get input/output tensor info (names, shapes, types)
     // TODO: Store input/output metadata for later use
     // TODO: Return true if successful, false otherwise
+
+    // check if model file exists
+    namespace fs = std::filesystem;
+    return fs::exists(modelPath);
+
+    // crearte onnruntime enviornment
+
 }
 
 // Run inference on preprocessed input
@@ -99,6 +119,7 @@ std::vector<float> Engine::runInference(const cv::Mat& preprocessedInput) {
 cv::Size Engine::getInputSize() const {
     // TODO: Return model input dimensions (usually 640x640 for YOLOv8)
     // return input size
+    return input_shapes_;
 }
 
 // Get number of classes the model can detect
