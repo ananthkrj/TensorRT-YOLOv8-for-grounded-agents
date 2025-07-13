@@ -98,9 +98,14 @@ bool Engine::loadModel(const std::string& modelPath) {
 
     // check if model file exists
     namespace fs = std::filesystem;
-    return fs::exists(modelPath);
+    // turn this into a conditional
+    if (!fs::exists(modelPath)) {
+        std::cerr << "Model file is not found at " << modelPath << '\n';
+        return false;
+    }
 
-    // crearte onnruntime enviornment
+
+    // crearte onnxruntime enviornment
 
 }
 
