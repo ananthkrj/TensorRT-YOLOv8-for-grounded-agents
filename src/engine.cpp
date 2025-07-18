@@ -66,7 +66,7 @@ bool Engine::loadModel(const std::string& modelPath) {
     // populate input names and shapes
     for (int i = 0; i < num_input_nodes; i++) {
         // allocate each node/index and store in char pointer
-        char* name = session_.GetInputName(i, allocator);
+        char* name = session_->GetInputName(i, allocator);
         input_names_.push_back(name); 
 
         // utilize type info ort struct, type info -> tensor info -> tensorshapeandinfo
@@ -77,7 +77,19 @@ bool Engine::loadModel(const std::string& modelPath) {
     }
 
     // populate output names and shapes
-    for (int i = 0; i < num_output_nodes = session)
+    for (int i = 0; i < num_output_nodes = session) {
+        // allocate each node/index and store it in a char point
+        char* name = session_->GetOutputName(i, allocator);
+        output_names_.push_back(name);
+
+        // utilize type info ort struct, 
+        // type info -> tensor info -> append to oujtpit sjapes
+        Ort::TypeInfo type_info = session_->GetTypeInfo();
+        auto tensor_info = session_->GetTensorTypeAndShapeInfo();
+        output_shapes_.push_back(tensor_info.GetShape());
+    }
+
+    return true;
 
 }
 
