@@ -8,83 +8,20 @@ Where we load the model and extract its metadata using onnx runtime calls
 */
 Engine::Engine() {
     // initiliaze onnx runtime components
-    // TODO: Initialize session pointer 
+    // TODO: Initialize the session characteristics
     // TODO: Initialize input/output names
     // TODO: Set default model dimensions (640x640 for YOLOv8)
 
-    // Initialize session (you likely want to pass environment + session options here)
-    session_ = std::make_unique<Ort::Session>(env_, model_path.c_str(), session_options_);
-
-    // vectors holding the pointers to character of input and output nodes
-    // in onnx graph must be populated with actual input and output from
-    // generated onnx model
-
-    // initilaize variable to store number of model inputs and outputs
-    // iterate through, and populate indidual character array 
-    // with index and allocator
-    // then populate overall unique pointer with those individual
-    // character arrays until iteration is done
-    Ort:AllocatorWithDefaultOptions allocator;
-
-    size_t num_input_nodes = session_.GetInputCount();
-
-    for (size_t i = 0; i < num_input_nodes; i++) {
-        char* input_name = session_->GetInputName(i, allocator);
-        input_names_.push_back(input_name);
-    }
-
-    size_t num_output_nodes = session_.GetOutputCount();
-
-    for (size_t i = 0; i < num_output_nodes; i++) {
-        char* output_name = session_->GetOutputName(i, allocator);
-        output_names_.push_back(output_name);
-    }
-
-    // set model input and output dimensions by dynamically 
-    // getting the info from model using Ort member functions
-    // get the type info (model and shape) of session_ pointer
-    // intialize tensor info using auto type deduction and tensor
-    // shape and info member fucntion of type info
-    // populate input shape vector with shape of tensor info
-    // append input shape vector to input shapes (dimension) 
-    
-    for (size_t i = 0; i < num_input_nodes; i++) {
-        Ort::TypeInfo type_info = session_->GetInputTypeInfo();
-        auto tensor_info = type_info_.GetTensorTypeAndShapeInfo();
-        std::vector<int64_t> input_shape = tensor_info_.GetShape();
-
-        input_shapes_.push_back(input_shape);
-    }
-    
-    size_t num_outputs = session_.GetOutputCount();
-
-    for (size_t i = 0; i < num_output_nodes; i++) {
-        Ort::TypeInfo type_info = session_->GetOutputTypeInfo();
-        auto tensor_info = type_info_.GetTensorTypeAndShapeInfo();
-        std::vector<int64_t> output_shape = tensor_info_GetShape();
-
-        output_shapes_.push_back(output_shape);
-    }
+    // initialize the environment name
+    env_ = std::make_unique<Ort::Env>(ORT_LOGGING_LEVEL_WARNING, "Yolov8Engine");
+    // initialize the session options as well
+    session_options_ = std::make_unique<Ort::SessionOptions>();
+    // set graph optimization (highest level) for session opetions
+    session_options_->SetGraphOptimizationLevel(GraphOptimizationLevel::ORT_ENABLE_ALL);
 }
 
-// Destructor: Clean up resources
-Engine::~Engine() {
-    // TODO: Clean up ONNX session if it exists
-    // uni
-    // TODO: Release any allocated memory
-    // default allocator used again
-    Ort:AllocatorWithDefaultOptions allocator;
-    // need to free, cast to a void pointer explicitly as free
-    // generally expects a void* argument
-    // we are freeing input and output 
-    for (const char* name : input_names) {
-        allocator.Free()(void*)name;
-    }
-
-    for (const char* name : output_names) {
-        allocator.Free()(void*)name;
-    }
-}
+// no need for a destructor, because i am not allocating anything in the
+// the constructor
 
 // Load ONNX model from file path
 bool Engine::loadModel(const std::string& modelPath) {
@@ -104,8 +41,29 @@ bool Engine::loadModel(const std::string& modelPath) {
         return false;
     }
 
-
     // crearte onnxruntime enviornment
+
+    // clear previous session
+    session_.clear()
+
+    // create session, using env, model path, and session_options
+    // pass the environment and session options by value
+    session_ = std::make_unique<Ort::Session>(*env_, model_path.c_str(), *session_options_);
+
+    // reset metadata
+    input_names_.clear();
+    output_names_.clear();
+    input_shapes_.clear();
+    output_shapes_.clear();
+
+    // declare ort allocator, way to access standard memory management provided by ort
+    Ort::AllocatorWithDefaultOptions allocator;
+
+    // declare input and output
+
+    // populate input names and shapes
+
+    // populate output names and shapes
 
 }
 
