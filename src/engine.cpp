@@ -59,11 +59,25 @@ bool Engine::loadModel(const std::string& modelPath) {
     // declare ort allocator, way to access standard memory management provided by ort
     Ort::AllocatorWithDefaultOptions allocator;
 
-    // declare input and output
+    // declare input and output nodes
+    size_t num_input_nodes = session_->GetInputCount();
+    size_t num_output_nodes = session_->GetOutputCount();
 
     // populate input names and shapes
+    for (int i = 0; i < num_input_nodes; i++) {
+        // allocate each node/index and store in char pointer
+        char* name = session_.GetInputName(i, allocator);
+        input_names_.push_back(name); 
+
+        // utilize type info ort struct, type info -> tensor info -> tensorshapeandinfo
+        // need these series of steps to populate the input shape
+        Ort::TypeInfo type_info = session_->GetTypeInfo();
+        auto tensor_info = session_->GetTensorTypeAndShapeInfo();
+        input_shapes_.push_back(tensor_info.GetShape());
+    }
 
     // populate output names and shapes
+    for (int i = 0; i < num_output_nodes = session)
 
 }
 
