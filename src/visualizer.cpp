@@ -8,7 +8,7 @@
 
 //constructor
 Visualizer::Visualizer() {
-
+    
 }
 
 // destructor 

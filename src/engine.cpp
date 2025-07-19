@@ -111,21 +111,43 @@ std::vector<float> Engine::runInference(const cv::Mat& preprocessedInput) {
     // 2. create an onnx tensor from the preprocessedinput (integral)
 
     // define input tensor shape as {1, 3, 640, 640}
-    std::vector<int64_t> tensorShape = {1, 3, preprocessedInput.rows, preprocessedInput.cols};
+    std::vector<int64_t> inputShape = {1, 3, preprocessedInput.rows, preprocessedInput.cols};
 
     // create tensor, usitlise memoryinfo
     // tensor data will reside on the CPU, so need to use CreateCPU api part of MemoryInfo
     // creating tensors using memoryInfo class, and createCPU memberfunction of this class, along with device
     // allocator and OrtmemTypeCPU as parameters
-    Ort::MemoryType memoryType = Ort::MemoryType::CreateCPU(OrtDeviceAllocator, OrtMemTypeCPU);
+    Ort::MemoryInfo memoryInfo= Ort::MemoryInfo::CreateCPU(OrtDeviceAllocator, OrtMemTypeCPU);
 
     // create variable called input tensor and initialize it with the CreateTensor Ort API function
-    // initialize CreateTensor with data, shape, and data type
-    Ort::Value tensorInfo = Ort::Value::CreateTensor()
-
+    // initialize CreateTensor with float converted preprocessed image, data and size of the inputted tensor values,
+    // and data and size of inputShape, pass these parameters
+    // Ort::Value is a container for data passed to and from the inference engine
+    
+    Ort::Value inputTensor = Ort::Value::CreateTensor(memoryInfo, 
+    inputTensorValues.data(), inputTensorValues.size(), inputShape.data(), inputShape.size());
+    
     // 4. run the session (integral)
+    // intialize a variable outputTensors, and run the session
+    // pass these parameters: RunOptions{nullptr}, input_names.data(), &inputTensor, 1, output_names.data(), 
+    // iutput_names.size()
+
+    // Ort::RunOptions{nullptr}: creates a default run options object with no configuration, can use
+    // this to set a tag for profile/logging
+    // &inputTensor: pointer to the tensor that was created
+    // input_names_.data(): input node names
+    // output_names_.data(): output node names
+    // output_names_.size(): size of output nodes
+    // 1: number of input tensors passing in: must be specified in onnx runtime
+
+    auto outputTensor = session_.Run(Ort::SessionOptions{nullptr}, 
+    input_names_.data(), &inputTensor, 1, output_names_.data(), output_names_.size());
+
     // 5. convert Ort::value to a float value
     // 6. return result to be preprocessed
+    // use tensorToVector helper finmction, pass in outputTensor(first value) as the parameter
+
+    return tensorToVector(outputTensor[0]);
 }
 
     
