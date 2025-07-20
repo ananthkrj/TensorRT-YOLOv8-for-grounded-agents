@@ -43,8 +43,8 @@ bool Engine::initializeSession(const std::string& model_path) {
     // check if model_path exists
     // use std::filesystem to check if model_path(string parameter) exists
     namespace fs = std::filesystem;
-    if (!(fs(model_path))) {
-        std:;cerr << "Model does not exist at: " << model_path << '\n';
+    if (!fs::exists(model_path)) {
+        std::cerr << "Model does not exist at: " << model_path << '\n';
         return false;
     }
     
@@ -54,7 +54,7 @@ bool Engine::initializeSession(const std::string& model_path) {
     // intilize session with constructor configurations, pointer to environment, 
     // model_path as a c string, and pointer to session_options
     // use std::make_unique to create and return a unique pointer to a newly allocted object
-    session_ = std::make_unique<Ort::Session>(*env, model_path.c_str(), *session_options);
+    session_ = std::make_unique<Ort::Session>(*env_, model_path.c_str(), *session_options_);
 
     return true;
 }
@@ -103,7 +103,7 @@ std::vector<float> Engine::runInference(const cv::Mat& preprocessedInput) {
     // output_names_.size(): size of output nodes
     // 1: number of input tensors passing in: must be specified in onnx runtime
 
-    auto outputTensors = session_.Run(Ort::SessionOptions{nullptr}, 
+    auto outputTensors = session_.Run(Ort::RunOptions{nullptr}, 
     input_names_.data(), &inputTensor, 1, output_names_.data(), output_names_.size());
 
     // 5. convert Ort::value to a float value
@@ -111,7 +111,7 @@ std::vector<float> Engine::runInference(const cv::Mat& preprocessedInput) {
     // convert using GetTensorMutableData from onnx class
     float* floatArray = outputTensors[0].GetTensorMutableData();
     // tensorInfo
-    auto tensorInfo = outputTensor[0].GetTensorTypeAndShapeInfo();
+    auto tensorInfo = outputTensors[0].GetTensorTypeAndShapeInfo();
     // num of elements in tensor, using elementcount from tensortypeandhshapeinfo
     size_t numElements = tensorInfo.GetElementCount();
 
@@ -142,6 +142,16 @@ int Engine::getNumClasses() const {
     return output_shapes_[0][1];
 }
 
+/*
+To fix and test:
+
+Missing functionality:
+
+input_names_ and output_names_ should store const char* or convert to std::string
+Memory management for ONNX allocated strings needs proper handling
+
+*/
+
 void Engine::extractModelMetadata() {
     // input and output metadata population
 
@@ -163,7 +173,7 @@ void Engine::extractModelMetadata() {
     // emplace back used when the goal is to construct an object
     // directly within a containers allocatd memory (passing allocator)
     // within name char pointer onto input_names
-    for (int i = 0; i < num_output_nodes; i++) {
+    for (int i = 0; i < num_input_nodes; i++) {
         char* name = session_->GetInputCount(i, allocator);
         input_names_.emplace_back(name);
         allocator.Free(name);
