@@ -88,6 +88,6 @@ private:
     // helper method to update preprocessing info
     void updatePreprocessInfo(const cv::Mat& original, const cv::Mat& processed, 
     float scale_x, float scale_y, int pad_x, int pad_y);
-}
+};
 
 #endif 
