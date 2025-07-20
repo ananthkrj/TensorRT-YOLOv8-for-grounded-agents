@@ -4,26 +4,68 @@
 // - resizeImage(): use cv::resize() to match model input size
 // - normalizeImage(): convert uint8 pixels to float, apply normalization
 #include "preprocessor.hpp"
+#include <opencv2/opencv.hpp>
+#include <iostream>
+#include <string>
 
 // constructor
-preprocessor::preprocessor(int inputWidth, int inputHeight) {
+Preprocessor::Preprocessor(int target_width = 640, int target_height = 640) {
 
 }
 
-// destructor
-preprocessor::~preprocessor() {
-
-}
-
-bool preprocessor::preprocess(const cv::Mat& image, float* output) {
+// main preprocessing pipeline
+cv::Mat Preprocessor::preprocess(const cv::Mat& input, CameraEnvironment env = CameraEnvironment::NORMAL_COLOR) {
 
 }
 
 
-cv::Mat preprocessor::resizeImage(const cv::Mat& image) {
+// core preprocessing steps
+cv::Mat Preprocessor::ResizeWithPadding(const cv::Mat& input) {
 
 }
 
-preprocessor::void normalizeImage(const cv::Mat& image, float* buffer) {
+cv::Mat Preprocessor::ConvertBGRtoRGB(const cv::Mat& input) {
+
+}
+
+cv::Mat Preprocessor::Normalize(const cv::Mat& input) {
+
+}
+
+cv::Mat Preprocessor:ConvertToBlob(const cv::Mat& input) {
+
+}
+
+
+// environment specific preprocessing
+cv::Mat Preprocessor::processNormalColor(const cv::Mat& input) {
+
+}
+
+cv::Mat Preprocessor::processGrayscale(const cv::Mat& input) {
+
+}
+
+// utility methods
+bool Preprocessor::IsGrayScale(cv::Mat& input) const {
+
+}
+
+cv::Mat Preprocessor::convertToGrayscale(cv::Mat& input) {
+
+}
+
+cv::Mat Preprocessor::grayscaleToRGB(cv::Mat& input) {
+
+}
+
+
+// getters
+// May not Need
+PreprocessInfo Preprocessor::getLastPreprocessInfo() const {
+
+}
+
+cv::Size Preprocessor::getTargetSize() const {
 
 }

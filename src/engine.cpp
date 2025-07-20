@@ -43,8 +43,8 @@ bool Engine::initializeSession(const std::string& model_path) {
     // check if model_path exists
     // use std::filesystem to check if model_path(string parameter) exists
     namespace fs = std::filesystem;
-    if (!fs::exists(model_path)) {
-        std::cerr << "Model does not exist at: " << model_path << '\n';
+    if (fs::exists(model_path)) {
+        std:;cerr << "Model does not exist at: " << model_path << '\n';
         return false;
     }
     
@@ -146,6 +146,8 @@ int Engine::getNumClasses() const {
 To fix and test:
 
 Missing functionality:
+
+Need to check for these bugs and test
 
 input_names_ and output_names_ should store const char* or convert to std::string
 Memory management for ONNX allocated strings needs proper handling
